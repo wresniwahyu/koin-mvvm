@@ -1,0 +1,106 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.www.app"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode versionMajor * 1000000 + versionMinor * 1000 + versionPatch * 100
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "mode"
+    productFlavors {
+        dev {
+            applicationIdSuffix ".dev"
+            dimension "mode"
+            buildConfigField "String", "BASE_URL", '"https://api.themoviedb.org/3/"'
+            buildConfigField "String", "BASE_IMAGE_URL", '"https://image.tmdb.org/t/p/w500"'
+            buildConfigField "String", "API_KEY_MDB", '"2703e5abeaf816ce1a538fd4ee2cafe1"'
+        }
+        production {
+            dimension "mode"
+            buildConfigField "String", "BASE_URL", '"https://api.themoviedb.org/3/"'
+            buildConfigField "String", "BASE_IMAGE_URL", '"https://image.tmdb.org/t/p/w500"'
+            buildConfigField "String", "API_KEY_MDB", '"2703e5abeaf816ce1a538fd4ee2cafe1"'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
+
+    // Koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-scope:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation "org.koin:koin-test:$koin_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+
+    //json
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    // ViewModel and LiveData
+//    implementation "android.arch.lifecycle:extensions:$android_architecture_version"
+//    annotationProcessor "android.arch.lifecycle:compiler:$android_architecture_version"
+//    testImplementation "android.arch.core:core-testing:$android_architecture_version"
+
+    // Lifecycle components
+    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

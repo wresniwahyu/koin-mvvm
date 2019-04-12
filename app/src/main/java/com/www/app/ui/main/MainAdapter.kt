@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.www.app.data.model.movies.ResultsItem
 import com.www.app.databinding.ItemMovieBinding
 import com.www.app.ui.base.BaseViewHolder
+import com.www.app.ui.detail.DetailActivity
 
 class MainAdapter(private val context: Context) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -28,7 +29,6 @@ class MainAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.setIsRecyclable(false)
         holder.onBind(position)
-
     }
 
     inner class ViewHolder(var itemMovieBinding: ItemMovieBinding) : BaseViewHolder(itemMovieBinding.root) {
@@ -40,6 +40,10 @@ class MainAdapter(private val context: Context) :
             mainAdapterViewModel = MainAdapterViewModel(list[position])
             itemMovieBinding.mainAdapterViewModel = mainAdapterViewModel
             itemMovieBinding.executePendingBindings()
+
+            imgPoster.setOnClickListener {
+                context.startActivity(DetailActivity.getActivityIntent(context, mainAdapterViewModel.item.id))
+            }
         }
     }
 

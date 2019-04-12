@@ -14,11 +14,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(), MainActivityNavigator {
 
     private val mMainActivityViewModel: MainActivityViewModel by viewModel()
-    private val mMainAdapter: MainAdapter by inject()
+    private val mMainAdapter: MainAdapter by inject { parametersOf(this@MainActivity) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

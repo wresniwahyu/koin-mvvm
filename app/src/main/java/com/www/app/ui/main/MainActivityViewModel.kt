@@ -11,7 +11,7 @@ import retrofit2.Response
 
 class MainActivityViewModel(private val apiInterface: ApiInterface) : BaseViewModel<MainActivityNavigator>() {
 
-    fun getMovies() {
+    fun getMovies(page: Int) {
         getNavigator()?.let {
             val response = object : DisposableObserver<Response<MoviesResponse>>() {
 
@@ -25,7 +25,7 @@ class MainActivityViewModel(private val apiInterface: ApiInterface) : BaseViewMo
 
                 override fun onNext(t: Response<MoviesResponse>) {
                     if (t.isSuccessful) {
-                        it.showSuccessGetMovies(t.body().results)
+                        it.showSuccessGetMovies(t.body())
                     }
                 }
 
@@ -35,7 +35,7 @@ class MainActivityViewModel(private val apiInterface: ApiInterface) : BaseViewMo
             }
 
             compositeDisposable.add(response)
-            apiInterface.getPopularMovies(BuildConfig.API_KEY_MDB, 1)
+            apiInterface.getPopularMovies(BuildConfig.API_KEY_MDB, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(response)

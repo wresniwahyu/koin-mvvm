@@ -15,7 +15,12 @@ class MainAdapter(private val context: Context) :
     var list = ArrayList<ResultsItem>()
 
     fun addAll(items: ArrayList<ResultsItem>) {
-        list = items
+        list.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        list.clear()
         notifyDataSetChanged()
     }
 
